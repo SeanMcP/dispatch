@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dispatch JS</title>
+  </head>
+  <body>
+    <button data-dispatch="click:add-button">Add</button>
+    <div id="button-container">
+      <button data-dispatch="click:test" data-dispatch-detail='{ "value": 4 }'>Test</button>
+    </div>
+  </body>
+  <script type="module">
+    import { Dispatch } from "./dispatch.js";
+    const EVENTS = {
+      "add-button": new CustomEvent("add-button", { bubbles: true }),
+      test: new CustomEvent("test", { bubbles: true }),
+    };
+
+    const dispatch = new Dispatch(EVENTS);
+    dispatch.init();
+
+    window.addEventListener("test", console.log);
+    window.addEventListener("add-button", (event) => {
+        console.log(event)
+        document.getElementById('button-container').innerHTML += `<button data-dispatch="click:test">Test</button>`;
+    });
+  </script>
+</html>
